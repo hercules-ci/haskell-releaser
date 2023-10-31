@@ -1,5 +1,11 @@
 # Revision history for releaser
 
+## 0.3.0.1 -- 2023-10-31
+
+* Repo is now [github.com/hercules-ci/haskell-releaser](https://github.com/hercules-ci/haskell-releaser)
+
+* Cabal 3.8 support
+
 ## 0.3.0.0 -- 2020-05-04
 
 * Upload to haddock support
