@@ -1,7 +1,7 @@
 module Main (main) where
 
 import Releaser.Primitives
-import System.IO (hSetBuffering, stdout, stderr, BufferMode(..))
+import System.IO (BufferMode (..), hSetBuffering, stderr, stdout)
 
 main :: IO ()
 main = do

@@ -62,6 +62,7 @@
         packages.default = self'.packages.releaser;
 
         pre-commit.settings.hooks.nixpkgs-fmt.enable = true;
+        pre-commit.settings.hooks.ormolu.enable = true;
 
       };
     };
