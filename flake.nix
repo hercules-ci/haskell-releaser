@@ -73,6 +73,15 @@
         pre-commit.settings.hooks.nixpkgs-fmt.enable = true;
         pre-commit.settings.hooks.ormolu.enable = true;
 
+        checks.missing-command = pkgs.runCommand "test-missing-command"
+          {
+            nativeBuildInputs = [ config.packages.default ];
+          } ''
+          echo "Checking releaser behavior. This may emit some error messages."
+          set -euo pipefail
+          (! releaser 2>&1) | tee /dev/stderr | grep "Command not found: git" >/dev/null
+          touch $out
+        '';
       };
     };
 }
