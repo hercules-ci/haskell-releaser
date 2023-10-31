@@ -4,6 +4,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     haskell-flake.url = "github:srid/haskell-flake";
     hercules-ci-effects.url = "github:hercules-ci/hercules-ci-effects";
+    pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
   };
   outputs = inputs@{ self, flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -11,11 +12,12 @@
       imports = [
         inputs.haskell-flake.flakeModule
         inputs.hercules-ci-effects.flakeModule
+        inputs.pre-commit-hooks.flakeModule
       ];
 
       herculesCI.ciSystems = [ "x86_64-linux" "aarch64-darwin" ];
 
-      perSystem = { self', pkgs, ... }: {
+      perSystem = { config, self', pkgs, ... }: {
 
         haskellProjects.default = {
           # The base package set representing a specific GHC version.
@@ -42,16 +44,18 @@
           #   };
           # };
 
-          # devShell = {
-          #  # Enabled by default
-          #  enable = true;
-          #
-          #  # Programs you want to make available in the shell.
-          #  # Default programs can be disabled by setting to 'null'
-          #  tools = hp: { fourmolu = hp.fourmolu; ghcid = null; };
-          #
-          #  hlsCheck.enable = true;
-          # };
+          devShell = {
+            mkShellArgs.shellHook = ''
+              ${config.pre-commit.installationScript}
+            '';
+            #
+            #  # Programs you want to make available in the shell.
+            #  # Default programs can be disabled by setting to 'null'
+            #  tools = hp: { fourmolu = hp.fourmolu; ghcid = null; };
+            #
+            #  hlsCheck.enable = true;
+            # };
+          };
         };
 
         # haskell-flake doesn't set the default package, but you can do it here.
