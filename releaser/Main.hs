@@ -8,6 +8,8 @@ main = do
   hSetBuffering stdout LineBuffering
   hSetBuffering stderr LineBuffering
 
+  assertBasicCommands
+
   -- prepare release
   -- TODO: pass a list directories
   gitAssertEmptyStaging

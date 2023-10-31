@@ -23,13 +23,18 @@ module Releaser.Primitives
     abort,
     logStep,
     changelogPrepare,
+    -- checks
+    assertBasicCommands,
+    assertCommandExists,
   )
 where
 
+import Control.Monad (when)
 import qualified Data.ByteString as BS
 import Data.Foldable (toList)
 import Data.Functor (void)
 import Data.List (intercalate)
+import Data.Maybe (isNothing)
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
 import Data.Version (parseVersion)
@@ -43,6 +48,7 @@ import Distribution.Types.PackageName (unPackageName)
 import Distribution.Types.Version (mkVersion', versionNumbers)
 import Distribution.Verbosity (Verbosity, normal, silent)
 import System.Console.Pretty (Color (..), color)
+import System.Directory (findExecutable)
 import System.Environment (lookupEnv)
 import System.Exit (ExitCode (..), exitFailure)
 import System.IO
@@ -238,3 +244,14 @@ interactiveProcess cmd bad = do
   case exitcode of
     ExitSuccess -> return ()
     ExitFailure i -> bad i
+
+assertCommandExists :: String -> IO ()
+assertCommandExists cmd = do
+  exe <- findExecutable cmd
+  when (isNothing exe) $ do
+    abort $ "Command not found: " <> cmd <> ". Make sure it's available in your environment (e.g. nix shell, direnv) or install it."
+
+assertBasicCommands :: IO ()
+assertBasicCommands = do
+  assertCommandExists "git"
+  assertCommandExists "cabal"

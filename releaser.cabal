@@ -23,6 +23,7 @@ library
     build-depends:
         base >=4.7 && <5,
         bytestring,
+        directory,
         Cabal >=3.6,
         regex-tdfa -any,
         process -any,
