@@ -1,5 +1,13 @@
 # Revision history for releaser
 
+## 0.3.0.2 -- 2023-11-01
+
+* New primitive `assertCommandExists`
+
+* Make sure `git` and `cabal` are available before `releaser` does anything
+
+* Primitive: `assertBasicCommands`, to perform the above check in custom scripts.
+
 ## 0.3.0.1 -- 2023-10-31
 
 * Repo is now [github.com/hercules-ci/haskell-releaser](https://github.com/hercules-ci/haskell-releaser)
