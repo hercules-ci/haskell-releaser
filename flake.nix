@@ -18,10 +18,12 @@
 
       herculesCI.ciSystems = [ "x86_64-linux" "aarch64-darwin" ];
 
-      perSystem = { config, self', pkgs, ... }: {
+      perSystem = { config, self', pkgs, system, ... }: {
 
         # This set is for CI
-        haskellProjects.nixos-23.05 = {
+        haskellProjects."nixos-23_05" = {
+          basePackages = inputs.nixos-23_05.legacyPackages.${system}.haskellPackages;
+
           # dont bother checking availability of shell tools
           devShell.enable = false;
         };

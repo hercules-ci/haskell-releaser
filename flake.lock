@@ -127,6 +127,22 @@
         "type": "github"
       }
     },
+    "nixos-23_05": {
+      "locked": {
+        "lastModified": 1698562188,
+        "narHash": "sha256-9nkxGnA/T+jLhHAMFRW157Qi/zfbf5dF1q7HfKROl3o=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "3e10c80821dedb93592682379f476745f370a58e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-23.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1697723726,
@@ -179,16 +195,16 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1698562188,
-        "narHash": "sha256-9nkxGnA/T+jLhHAMFRW157Qi/zfbf5dF1q7HfKROl3o=",
+        "lastModified": 1698611440,
+        "narHash": "sha256-jPjHjrerhYDy3q9+s5EAsuhyhuknNfowY6yt6pjn9pc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "3e10c80821dedb93592682379f476745f370a58e",
+        "rev": "0cbe9f69c234a7700596e943bfae7ef27a31b735",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-23.05",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -236,6 +252,7 @@
         "flake-parts": "flake-parts",
         "haskell-flake": "haskell-flake",
         "hercules-ci-effects": "hercules-ci-effects",
+        "nixos-23_05": "nixos-23_05",
         "nixpkgs": "nixpkgs_2",
         "pre-commit-hooks": "pre-commit-hooks"
       }
