@@ -1,6 +1,7 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    "nixos-23_05".url = "github:NixOS/nixpkgs/nixos-23.05";
     flake-parts.url = "github:hercules-ci/flake-parts";
     haskell-flake.url = "github:srid/haskell-flake";
     hercules-ci-effects.url = "github:hercules-ci/hercules-ci-effects";
@@ -18,6 +19,12 @@
       herculesCI.ciSystems = [ "x86_64-linux" "aarch64-darwin" ];
 
       perSystem = { config, self', pkgs, ... }: {
+
+        # This set is for CI
+        haskellProjects.nixos-23.05 = {
+          # dont bother checking availability of shell tools
+          devShell.enable = false;
+        };
 
         haskellProjects.default = {
           # The base package set representing a specific GHC version.
