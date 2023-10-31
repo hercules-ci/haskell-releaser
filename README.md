@@ -73,3 +73,7 @@ Package successfully published. You can now view it at
 ## Prior art
 
 - [bgamari/hs-maintainer-tools](https://github.com/bgamari/hs-maintainer-tools)
+
+## Credit
+
+This package was originally written by [Domen Kožar](https://github.com/domenkozar).
