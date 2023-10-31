@@ -1,3 +1,5 @@
+{-# LANGUAGE CPP #-}
+
 module Releaser.Primitives
   ( -- cabal utilities
     CabalInfo (..),
@@ -24,19 +26,22 @@ module Releaser.Primitives
   )
 where
 
+import qualified Data.ByteString as BS
+import Data.Foldable (toList)
 import Data.Functor (void)
 import Data.List (intercalate)
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
 import Data.Version (parseVersion)
 import Distribution.PackageDescription.Parsec
-import Distribution.Simple.Utils (tryFindPackageDesc)
-import Distribution.Types.GenericPackageDescription (packageDescription)
+import Distribution.Parsec (PWarning (..), showPError)
+import Distribution.Simple.Utils (die', tryFindPackageDesc)
+import Distribution.Types.GenericPackageDescription (GenericPackageDescription, packageDescription)
 import Distribution.Types.PackageDescription (package)
 import Distribution.Types.PackageId (pkgName, pkgVersion)
 import Distribution.Types.PackageName (unPackageName)
 import Distribution.Types.Version (mkVersion', versionNumbers)
-import Distribution.Verbosity (silent)
+import Distribution.Verbosity (Verbosity, normal, silent)
 import System.Console.Pretty (Color (..), color)
 import System.Environment (lookupEnv)
 import System.Exit (ExitCode (..), exitFailure)
@@ -69,6 +74,15 @@ data CabalInfo = CabalInfo
   { name :: String,
     version :: String
   }
+
+#if MIN_VERSION_Cabal(3,8,0)
+readGenericPackageDescription :: Verbosity -> FilePath -> IO GenericPackageDescription
+readGenericPackageDescription v p = do
+  bs <- BS.readFile p
+  case runParseResult (parseGenericPackageDescription bs) of
+    (_warnings, Right gpd) -> pure gpd
+    (_warnings, Left (v, e)) -> fail $ "Cabal file " ++ p ++ " has problems:\n" ++ unlines (map (showPError p) (toList e))
+#endif
 
 -- | Given a folder, find a Cabal file and read the package version
 cabalRead :: FilePath -> IO CabalInfo
