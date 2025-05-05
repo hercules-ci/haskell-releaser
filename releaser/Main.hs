@@ -1,10 +1,35 @@
+{-# LANGUAGE BlockArguments #-}
+{-# LANGUAGE OverloadedRecordDot #-}
+
 module Main (main) where
 
+import Control.Monad (when)
+import Options.Applicative
 import Releaser.Primitives
 import System.IO (BufferMode (..), hSetBuffering, stderr, stdout)
 
+data Options = Options
+  { pushDocs :: Bool
+  }
+
 main :: IO ()
-main = do
+main =
+  execParser (info (helper <*> options) (fullDesc <> progDesc "Release a Haskell package"))
+    >>= run
+
+options :: Parser Options
+options =
+  Options
+    <$> ( not
+            <$> switch
+              ( long "no-push-docs"
+                  <> help "Do not push documentation to hackage"
+                  <> showDefault
+              )
+        )
+
+run :: Options -> IO ()
+run opts = do
   hSetBuffering stdout LineBuffering
   hSetBuffering stderr LineBuffering
 
@@ -28,5 +53,6 @@ main = do
   cabalUpload tarball
 
   -- make haddocks and upload them
-  docsTarball <- cabalMakeHaddocks "."
-  cabalUploadDocs docsTarball
+  when opts.pushDocs do
+    docsTarball <- cabalMakeHaddocks "."
+    cabalUploadDocs docsTarball
