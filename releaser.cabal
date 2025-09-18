@@ -40,4 +40,5 @@ executable releaser
         Paths_releaser
     build-depends:
         base -any,
-        releaser -any
+        releaser -any,
+        optparse-applicative -any

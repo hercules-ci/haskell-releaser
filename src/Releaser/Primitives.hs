@@ -186,15 +186,16 @@ gitCheckout tag = do
     promptRetry "git checkout failed"
     gitCheckout tag
 
-gitTag :: String -> IO ()
-gitTag tag = do
-  logStep $ "Running $ git tag --annotate --sign " <> tag
+gitTag :: Bool -> String -> IO ()
+gitTag sign tag = do
+  let args = ["tag", "--annotate"] ++ (if sign then ["--sign"] else []) ++ [tag]
+  logStep $ "Running $ git tag --annotate" ++ (if sign then " --sign" else "") ++ " " ++ tag
   tags <- gitGetTags
   if elem tag tags
     then abort "git tag already exists, please delete it and start over"
-    else interactiveProcess (proc "git" ["tag", "--annotate", "--sign", tag]) $ \i -> do
+    else interactiveProcess (proc "git" args) $ \i -> do
       promptRetry "git tag failed"
-      gitTag tag
+      gitTag sign tag
 
 gitCommit :: String -> IO ()
 gitCommit message = do
